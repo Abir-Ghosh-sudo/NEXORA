@@ -1,0 +1,7 @@
+C:/Users/ABIR/OneDrive/Desktop/hacathon/Nexora/NEXORA/build/CMakeFiles/Experimental.dir
+C:/Users/ABIR/OneDrive/Desktop/hacathon/Nexora/NEXORA/build/CMakeFiles/Nightly.dir
+C:/Users/ABIR/OneDrive/Desktop/hacathon/Nexora/NEXORA/build/CMakeFiles/Continuous.dir
+C:/Users/ABIR/OneDrive/Desktop/hacathon/Nexora/NEXORA/build/CMakeFiles/NightlyMemoryCheck.dir
+C:/Users/ABIR/OneDrive/Desktop/hacathon/Nexora/NEXORA/build/CMakeFiles/RUN_TESTS.dir
+C:/Users/ABIR/OneDrive/Desktop/hacathon/Nexora/NEXORA/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/ABIR/OneDrive/Desktop/hacathon/Nexora/NEXORA/build/CMakeFiles/ZERO_CHECK.dir
