@@ -34,18 +34,19 @@ target_compile_definitions(nexora_runtime
 
 message(STATUS "NEXORA Runtime configuration loaded")
 if(NEXORA_BUILD_TESTS)
-    add_executable(nexora_runtime_tests
-        tests/runtime_tests.cpp
-    )
 
-    target_link_libraries(nexora_runtime_tests
-        PRIVATE
-            NEXORA::Runtime
-            NEXORA::BuildOptions
-    )
+    add_executable(nexora_runtime_info_tests
+    tests/runtime_info_tests.cpp
+)
 
-    add_test(
-        NAME NEXORA.Runtime.Lifecycle
-        COMMAND nexora_runtime_tests
-    )
+target_link_libraries(nexora_runtime_info_tests
+    PRIVATE
+        NEXORA::Runtime
+        NEXORA::BuildOptions
+)
+
+add_test(
+    NAME NEXORA.Runtime.Information
+    COMMAND nexora_runtime_info_tests
+)
 endif()
