@@ -49,4 +49,32 @@ add_test(
     NAME NEXORA.Runtime.Information
     COMMAND nexora_runtime_info_tests
 )
+add_executable(nexora_runtime_info_tests
+    tests/runtime_info_tests.cpp
+)
+
+target_link_libraries(nexora_runtime_info_tests
+    PRIVATE
+        NEXORA::Runtime
+        NEXORA::BuildOptions
+)
+
+add_test(
+    NAME NEXORA.Runtime.Information
+    COMMAND nexora_runtime_info_tests
+)
+add_executable(nexora_error_tests
+    tests/error_tests.cpp
+)
+
+target_link_libraries(nexora_error_tests
+    PRIVATE
+        NEXORA::Runtime
+        NEXORA::BuildOptions
+)
+
+add_test(
+    NAME NEXORA.Runtime.Errors
+    COMMAND nexora_error_tests
+)
 endif()
