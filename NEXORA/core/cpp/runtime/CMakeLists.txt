@@ -144,4 +144,17 @@ add_test(
     NAME nexora_config_manager_tests
     COMMAND nexora_config_manager_tests
 )
+add_executable(nexora_config_defaults_tests
+    tests/config_defaults_tests.cpp
+)
+
+target_link_libraries(nexora_config_defaults_tests
+    PRIVATE
+        NEXORA::Runtime
+)
+
+add_test(
+    NAME nexora_config_defaults_tests
+    COMMAND nexora_config_defaults_tests
+)
 endif()
