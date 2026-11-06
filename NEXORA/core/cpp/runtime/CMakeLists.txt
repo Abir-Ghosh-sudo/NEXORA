@@ -131,4 +131,17 @@ add_test(
     NAME nexora_config_validator_tests
     COMMAND nexora_config_validator_tests
 )
+add_executable(nexora_config_manager_tests
+    tests/config_manager_tests.cpp
+)
+
+target_link_libraries(nexora_config_manager_tests
+    PRIVATE
+        NEXORA::Runtime
+)
+
+add_test(
+    NAME nexora_config_manager_tests
+    COMMAND nexora_config_manager_tests
+)
 endif()
