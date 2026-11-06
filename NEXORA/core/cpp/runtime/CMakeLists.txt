@@ -118,4 +118,17 @@ add_test(
     NAME nexora_status_tests
     COMMAND nexora_status_tests
 )
+add_executable(nexora_config_validator_tests
+    tests/config_validator_tests.cpp
+)
+
+target_link_libraries(nexora_config_validator_tests
+    PRIVATE
+        NEXORA::Runtime
+)
+
+add_test(
+    NAME nexora_config_validator_tests
+    COMMAND nexora_config_validator_tests
+)
 endif()
