@@ -1,0 +1,35 @@
+
+name: NEXORA CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install CMake and Ninja
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build g++
+
+      - name: Configure NEXORA
+        run: |
+          cmake -S . -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Debug \
+            -DNEXORA_BUILD_TESTS=ON
+
+      - name: Build NEXORA
+        run: cmake --build build --parallel
+
+      - name: Run Tests
+        run: ctest --test-dir build --output-on-failure
