@@ -91,4 +91,18 @@ add_test(
     NAME NEXORA.Runtime.Result
     COMMAND nexora_result_tests
 )
+add_executable(nexora_exception_tests
+    tests/exception_tests.cpp
+)
+
+target_link_libraries(nexora_exception_tests
+    PRIVATE
+        NEXORA::Runtime
+        NEXORA::BuildOptions
+)
+
+add_test(
+    NAME NEXORA.Runtime.Exceptions
+    COMMAND nexora_exception_tests
+)
 endif()
