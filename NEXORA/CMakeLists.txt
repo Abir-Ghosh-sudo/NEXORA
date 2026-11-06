@@ -185,3 +185,8 @@ message(STATUS "======================================")
 # C++ core, C interfaces, and other components
 # will be registered here as their build configurations
 # are implemented and verified.
+# ============================================================
+# Core Components
+# ============================================================
+
+add_subdirectory(core/cpp/runtime)

@@ -1,7 +1,8 @@
 {
 	"InstallScripts" : 
 	[
-		"C:/Users/ABIR/OneDrive/Desktop/hacathon/Nexora/NEXORA/build/cmake_install.cmake"
+		"C:/Users/ABIR/OneDrive/Desktop/hacathon/Nexora/NEXORA/build/cmake_install.cmake",
+		"C:/Users/ABIR/OneDrive/Desktop/hacathon/Nexora/NEXORA/build/core/cpp/runtime/cmake_install.cmake"
 	],
 	"Parallel" : false
 }

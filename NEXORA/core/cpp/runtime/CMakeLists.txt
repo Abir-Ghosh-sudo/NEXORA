@@ -1,12 +1,16 @@
 
+# ============================================================
+# NEXORA Runtime Library
+# ============================================================
+
 add_library(nexora_runtime STATIC
     src/runtime.cpp
 )
 
 add_library(NEXORA::Runtime ALIAS nexora_runtime)
 
-target_compile_features(nexora_runtime PUBLIC
-    cxx_std_20
+target_compile_features(nexora_runtime
+    PUBLIC cxx_std_20
 )
 
 target_include_directories(nexora_runtime
@@ -15,8 +19,7 @@ target_include_directories(nexora_runtime
 )
 
 target_link_libraries(nexora_runtime
-    PRIVATE
-        NEXORA::BuildOptions
+    PRIVATE NEXORA::BuildOptions
 )
 
 set_target_properties(nexora_runtime PROPERTIES
@@ -28,133 +31,88 @@ set_target_properties(nexora_runtime PROPERTIES
 )
 
 target_compile_definitions(nexora_runtime
-    PRIVATE
-        NEXORA_RUNTIME_BUILD
+    PRIVATE NEXORA_RUNTIME_BUILD
 )
 
-message(STATUS "NEXORA Runtime configuration loaded")
+# ============================================================
+# Runtime Tests
+# ============================================================
+
 if(NEXORA_BUILD_TESTS)
 
-    add_executable(nexora_runtime_info_tests
-    tests/runtime_info_tests.cpp
-)
+    function(add_nexora_runtime_test target source test_name)
 
-target_link_libraries(nexora_runtime_info_tests
-    PRIVATE
-        NEXORA::Runtime
-        NEXORA::BuildOptions
-)
+        add_executable(${target}
+            ${source}
+        )
 
-add_test(
-    NAME NEXORA.Runtime.Information
-    COMMAND nexora_runtime_info_tests
-)
-add_executable(nexora_runtime_info_tests
-    tests/runtime_info_tests.cpp
-)
+        target_link_libraries(${target}
+            PRIVATE
+                NEXORA::Runtime
+                NEXORA::BuildOptions
+        )
 
-target_link_libraries(nexora_runtime_info_tests
-    PRIVATE
-        NEXORA::Runtime
-        NEXORA::BuildOptions
-)
+        add_test(
+            NAME ${test_name}
+            COMMAND ${target}
+        )
 
-add_test(
-    NAME NEXORA.Runtime.Information
-    COMMAND nexora_runtime_info_tests
-)
-add_executable(nexora_error_tests
-    tests/error_tests.cpp
-)
+    endfunction()
 
-target_link_libraries(nexora_error_tests
-    PRIVATE
-        NEXORA::Runtime
-        NEXORA::BuildOptions
-)
+    add_nexora_runtime_test(
+        nexora_runtime_tests
+        tests/runtime_tests.cpp
+        NEXORA.Runtime.Lifecycle
+    )
 
-add_test(
-    NAME NEXORA.Runtime.Errors
-    COMMAND nexora_error_tests
-)
-add_executable(nexora_result_tests
-    tests/result_tests.cpp
-)
+    add_nexora_runtime_test(
+        nexora_runtime_info_tests
+        tests/runtime_info_tests.cpp
+        NEXORA.Runtime.Information
+    )
 
-target_link_libraries(nexora_result_tests
-    PRIVATE
-        NEXORA::Runtime
-        NEXORA::BuildOptions
-)
+    add_nexora_runtime_test(
+        nexora_error_tests
+        tests/error_tests.cpp
+        NEXORA.Runtime.Errors
+    )
 
-add_test(
-    NAME NEXORA.Runtime.Result
-    COMMAND nexora_result_tests
-)
-add_executable(nexora_exception_tests
-    tests/exception_tests.cpp
-)
+    add_nexora_runtime_test(
+        nexora_result_tests
+        tests/result_tests.cpp
+        NEXORA.Runtime.Result
+    )
 
-target_link_libraries(nexora_exception_tests
-    PRIVATE
-        NEXORA::Runtime
-        NEXORA::BuildOptions
-)
+    add_nexora_runtime_test(
+        nexora_exception_tests
+        tests/exception_tests.cpp
+        NEXORA.Runtime.Exceptions
+    )
 
-add_test(
-    NAME NEXORA.Runtime.Exceptions
-    COMMAND nexora_exception_tests
-)
-add_executable(nexora_status_tests
-    tests/status_tests.cpp
-)
+    add_nexora_runtime_test(
+        nexora_status_tests
+        tests/status_tests.cpp
+        NEXORA.Runtime.Status
+    )
 
-target_link_libraries(nexora_status_tests
-    PRIVATE
-        NEXORA::Runtime
-)
+    add_nexora_runtime_test(
+        nexora_config_validator_tests
+        tests/config_validator_tests.cpp
+        NEXORA.Runtime.ConfigValidator
+    )
 
-add_test(
-    NAME nexora_status_tests
-    COMMAND nexora_status_tests
-)
-add_executable(nexora_config_validator_tests
-    tests/config_validator_tests.cpp
-)
+    add_nexora_runtime_test(
+        nexora_config_manager_tests
+        tests/config_manager_tests.cpp
+        NEXORA.Runtime.ConfigManager
+    )
 
-target_link_libraries(nexora_config_validator_tests
-    PRIVATE
-        NEXORA::Runtime
-)
+    add_nexora_runtime_test(
+        nexora_config_defaults_tests
+        tests/config_defaults_tests.cpp
+        NEXORA.Runtime.ConfigDefaults
+    )
 
-add_test(
-    NAME nexora_config_validator_tests
-    COMMAND nexora_config_validator_tests
-)
-add_executable(nexora_config_manager_tests
-    tests/config_manager_tests.cpp
-)
-
-target_link_libraries(nexora_config_manager_tests
-    PRIVATE
-        NEXORA::Runtime
-)
-
-add_test(
-    NAME nexora_config_manager_tests
-    COMMAND nexora_config_manager_tests
-)
-add_executable(nexora_config_defaults_tests
-    tests/config_defaults_tests.cpp
-)
-
-target_link_libraries(nexora_config_defaults_tests
-    PRIVATE
-        NEXORA::Runtime
-)
-
-add_test(
-    NAME nexora_config_defaults_tests
-    COMMAND nexora_config_defaults_tests
-)
 endif()
+
+message(STATUS "NEXORA Runtime configuration loaded")

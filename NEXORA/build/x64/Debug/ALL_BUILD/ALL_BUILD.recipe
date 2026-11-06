@@ -5,6 +5,33 @@
       <FullPath>C:\Users\ABIR\OneDrive\Desktop\hacathon\Nexora\NEXORA\build\x64\Debug\ZERO_CHECK</FullPath>
     </ProjectOutput>
     <ProjectOutput>
+      <FullPath>C:\Users\ABIR\OneDrive\Desktop\hacathon\Nexora\NEXORA\build\core\cpp\runtime\Debug\nexora_config_defaults_tests.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>C:\Users\ABIR\OneDrive\Desktop\hacathon\Nexora\NEXORA\build\core\cpp\runtime\Debug\nexora_config_manager_tests.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>C:\Users\ABIR\OneDrive\Desktop\hacathon\Nexora\NEXORA\build\core\cpp\runtime\Debug\nexora_config_validator_tests.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>C:\Users\ABIR\OneDrive\Desktop\hacathon\Nexora\NEXORA\build\core\cpp\runtime\Debug\nexora_error_tests.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>C:\Users\ABIR\OneDrive\Desktop\hacathon\Nexora\NEXORA\build\core\cpp\runtime\Debug\nexora_exception_tests.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>C:\Users\ABIR\OneDrive\Desktop\hacathon\Nexora\NEXORA\build\core\cpp\runtime\Debug\nexora_result_tests.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>C:\Users\ABIR\OneDrive\Desktop\hacathon\Nexora\NEXORA\build\core\cpp\runtime\Debug\nexora_runtime_info_tests.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>C:\Users\ABIR\OneDrive\Desktop\hacathon\Nexora\NEXORA\build\core\cpp\runtime\Debug\nexora_runtime_tests.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>C:\Users\ABIR\OneDrive\Desktop\hacathon\Nexora\NEXORA\build\core\cpp\runtime\Debug\nexora_status_tests.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
       <FullPath>C:\Users\ABIR\OneDrive\Desktop\hacathon\Nexora\NEXORA\build\x64\Debug\ALL_BUILD</FullPath>
     </ProjectOutput>
   </ProjectOutputs>

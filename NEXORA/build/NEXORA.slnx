@@ -9,6 +9,16 @@
 	</Configurations>
 	<Project Path="ALL_BUILD.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="66e8d464-88d2-3693-9d48-24eb9c8de6db" DefaultStartup="true">
 		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<BuildDependency Project="core/cpp/runtime/nexora_config_defaults_tests.vcxproj"/>
+		<BuildDependency Project="core/cpp/runtime/nexora_config_manager_tests.vcxproj"/>
+		<BuildDependency Project="core/cpp/runtime/nexora_config_validator_tests.vcxproj"/>
+		<BuildDependency Project="core/cpp/runtime/nexora_error_tests.vcxproj"/>
+		<BuildDependency Project="core/cpp/runtime/nexora_exception_tests.vcxproj"/>
+		<BuildDependency Project="core/cpp/runtime/nexora_result_tests.vcxproj"/>
+		<BuildDependency Project="core/cpp/runtime/nexora_runtime.vcxproj"/>
+		<BuildDependency Project="core/cpp/runtime/nexora_runtime_info_tests.vcxproj"/>
+		<BuildDependency Project="core/cpp/runtime/nexora_runtime_tests.vcxproj"/>
+		<BuildDependency Project="core/cpp/runtime/nexora_status_tests.vcxproj"/>
 		<Build Solution="Debug|*" Project="false"/>
 		<Build Solution="Release|*" Project="false"/>
 		<Build Solution="MinSizeRel|*" Project="false"/>
@@ -50,4 +60,43 @@
 		<Build Solution="RelWithDebInfo|*" Project="false"/>
 	</Project>
 	<Project Path="ZERO_CHECK.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="1291b22d-385c-39cf-942b-c12b932ae62a"/>
+	<Project Path="core/cpp/runtime/nexora_config_defaults_tests.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="6a525587-098a-3c03-b11b-d43da21704ac">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<BuildDependency Project="core/cpp/runtime/nexora_runtime.vcxproj"/>
+	</Project>
+	<Project Path="core/cpp/runtime/nexora_config_manager_tests.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="9c81dd5e-7a92-36e3-b4c0-9384dc09f0ae">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<BuildDependency Project="core/cpp/runtime/nexora_runtime.vcxproj"/>
+	</Project>
+	<Project Path="core/cpp/runtime/nexora_config_validator_tests.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="5cd46631-cfa1-3d7c-b668-f1e5ac134b2f">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<BuildDependency Project="core/cpp/runtime/nexora_runtime.vcxproj"/>
+	</Project>
+	<Project Path="core/cpp/runtime/nexora_error_tests.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="1a9aa010-bc01-36c9-9c18-b74eb9833ac9">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<BuildDependency Project="core/cpp/runtime/nexora_runtime.vcxproj"/>
+	</Project>
+	<Project Path="core/cpp/runtime/nexora_exception_tests.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="446eeb2c-3d65-331d-a134-156f5c125dd6">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<BuildDependency Project="core/cpp/runtime/nexora_runtime.vcxproj"/>
+	</Project>
+	<Project Path="core/cpp/runtime/nexora_result_tests.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="17da8f87-24bc-3549-ab19-680c2990608b">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<BuildDependency Project="core/cpp/runtime/nexora_runtime.vcxproj"/>
+	</Project>
+	<Project Path="core/cpp/runtime/nexora_runtime.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="ec1c6321-71b4-31c4-b028-c1a5e28ae846">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="core/cpp/runtime/nexora_runtime_info_tests.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="cd603ccc-8af0-3f8d-83a8-f6eaef09edb1">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<BuildDependency Project="core/cpp/runtime/nexora_runtime.vcxproj"/>
+	</Project>
+	<Project Path="core/cpp/runtime/nexora_runtime_tests.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="ec78db50-710f-35b1-9768-b2dc39f96eeb">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<BuildDependency Project="core/cpp/runtime/nexora_runtime.vcxproj"/>
+	</Project>
+	<Project Path="core/cpp/runtime/nexora_status_tests.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="b3cf335b-1f38-3f85-9e92-3bedaa386c18">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		<BuildDependency Project="core/cpp/runtime/nexora_runtime.vcxproj"/>
+	</Project>
 </Solution>
