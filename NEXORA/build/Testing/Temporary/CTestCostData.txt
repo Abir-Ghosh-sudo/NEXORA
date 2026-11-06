@@ -1,11 +1,10 @@
-NEXORA.Runtime.Lifecycle 1 0.1218
-NEXORA.Runtime.Information 0 0
-NEXORA.Runtime.Errors 1 0.080185
-NEXORA.Runtime.Result 1 0.0843216
-NEXORA.Runtime.Exceptions 1 0.0842987
-NEXORA.Runtime.Status 1 0.0812451
-NEXORA.Runtime.ConfigValidator 1 0.0877809
-NEXORA.Runtime.ConfigManager 1 0.0922045
-NEXORA.Runtime.ConfigDefaults 1 0.0785555
+NEXORA.Runtime.Lifecycle 2 0.0374422
+NEXORA.Runtime.Information 1 0.112239
+NEXORA.Runtime.Errors 2 0.0395299
+NEXORA.Runtime.Result 2 0.036365
+NEXORA.Runtime.Exceptions 2 0.0398499
+NEXORA.Runtime.Status 2 0.0362172
+NEXORA.Runtime.ConfigValidator 2 0.0555464
+NEXORA.Runtime.ConfigManager 2 0.0569951
+NEXORA.Runtime.ConfigDefaults 2 0.0545766
 ---
-NEXORA.Runtime.Information

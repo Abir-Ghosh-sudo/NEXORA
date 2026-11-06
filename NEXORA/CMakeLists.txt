@@ -9,7 +9,7 @@ project(
 )
 
 # ============================================================
-# Project standards
+# Project Standards
 # ============================================================
 
 set(CMAKE_C_STANDARD 17)
@@ -23,7 +23,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # ============================================================
-# Build options
+# Build Options
 # ============================================================
 
 option(NEXORA_BUILD_TESTS
@@ -42,28 +42,32 @@ option(NEXORA_WARNINGS_AS_ERRORS
 )
 
 # ============================================================
-# Build configuration
+# Build Configuration
 # ============================================================
 
 if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE
-        "Debug"
-        CACHE STRING "Build type" FORCE
+    set(CMAKE_BUILD_TYPE Debug CACHE STRING
+        "Build type" FORCE
     )
 endif()
 
 set_property(
     CACHE CMAKE_BUILD_TYPE
-    PROPERTY STRINGS Debug Release RelWithDebInfo MinSizeRel
+    PROPERTY STRINGS
+        Debug
+        Release
+        RelWithDebInfo
+        MinSizeRel
 )
 
 # ============================================================
-# Shared build configuration
+# Shared Build Options
 # ============================================================
 
 add_library(nexora_build_options INTERFACE)
 
-add_library(NEXORA::BuildOptions
+add_library(
+    NEXORA::BuildOptions
     ALIAS nexora_build_options
 )
 
@@ -75,7 +79,7 @@ target_compile_features(
 )
 
 # ============================================================
-# Compiler warnings
+# Compiler Configuration
 # ============================================================
 
 if(MSVC)
@@ -86,49 +90,49 @@ if(MSVC)
             /W4
             /permissive-
             /Zc:preprocessor
+            /Zc:__cplusplus
             /utf-8
     )
 
     if(NEXORA_WARNINGS_AS_ERRORS)
         target_compile_options(
             nexora_build_options
-            INTERFACE /WX
+            INTERFACE
+                /WX
         )
     endif()
 
-elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang"
-       AND CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
 
     target_compile_options(
         nexora_build_options
         INTERFACE
-            -Wall
-            -Wextra
-            -Wpedantic
-            -Wconversion
-            -Wsign-conversion
-            -Wshadow
-            -Wformat=2
-            -Wnull-dereference
+            $<$<COMPILE_LANGUAGE:C,CXX>:-Wall>
+            $<$<COMPILE_LANGUAGE:C,CXX>:-Wextra>
+            $<$<COMPILE_LANGUAGE:C,CXX>:-Wpedantic>
+            $<$<COMPILE_LANGUAGE:C,CXX>:-Wconversion>
+            $<$<COMPILE_LANGUAGE:C,CXX>:-Wsign-conversion>
+            $<$<COMPILE_LANGUAGE:C,CXX>:-Wshadow>
+            $<$<COMPILE_LANGUAGE:C,CXX>:-Wformat=2>
     )
 
     if(NEXORA_WARNINGS_AS_ERRORS)
         target_compile_options(
             nexora_build_options
-            INTERFACE -Werror
+            INTERFACE
+                -Werror
         )
     endif()
 
 endif()
 
 # ============================================================
-# Sanitizers (GCC / Clang)
+# Sanitizers
 # ============================================================
 
 if(NEXORA_ENABLE_SANITIZERS)
 
-    if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang"
-       AND CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+    if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
 
         target_compile_options(
             nexora_build_options
@@ -146,7 +150,7 @@ if(NEXORA_ENABLE_SANITIZERS)
     else()
 
         message(FATAL_ERROR
-            "NEXORA sanitizers currently require GCC or Clang."
+            "Sanitizers currently require GCC or Clang."
         )
 
     endif()
@@ -154,21 +158,30 @@ if(NEXORA_ENABLE_SANITIZERS)
 endif()
 
 # ============================================================
-# Testing
+# Testing Configuration
 # ============================================================
 
 if(NEXORA_BUILD_TESTS)
+
     include(CTest)
     enable_testing()
+
+    message(STATUS "NEXORA testing enabled")
+
+else()
+
+    message(STATUS "NEXORA testing disabled")
+
 endif()
 
 # ============================================================
-# Project information
+# Project Information
 # ============================================================
 
 message(STATUS "======================================")
 message(STATUS "          NEXORA BUILD SYSTEM         ")
 message(STATUS "======================================")
+
 message(STATUS "Version       : ${PROJECT_VERSION}")
 message(STATUS "C Standard    : C${CMAKE_C_STANDARD}")
 message(STATUS "C++ Standard  : C++${CMAKE_CXX_STANDARD}")
@@ -176,17 +189,23 @@ message(STATUS "Build Type    : ${CMAKE_BUILD_TYPE}")
 message(STATUS "Compiler      : ${CMAKE_CXX_COMPILER_ID}")
 message(STATUS "Tests         : ${NEXORA_BUILD_TESTS}")
 message(STATUS "Sanitizers    : ${NEXORA_ENABLE_SANITIZERS}")
+
 message(STATUS "======================================")
 
-# ============================================================
-# Future component integration
-# ============================================================
-
-# C++ core, C interfaces, and other components
-# will be registered here as their build configurations
-# are implemented and verified.
 # ============================================================
 # Core Components
 # ============================================================
 
 add_subdirectory(core/cpp/runtime)
+
+# ============================================================
+# Future Components
+# ============================================================
+
+# Future integration:
+# - C++ Core
+# - C System Interfaces
+# - Python AI Services
+# - TypeScript Desktop Platform
+# - Mojo Compute Engine
+
