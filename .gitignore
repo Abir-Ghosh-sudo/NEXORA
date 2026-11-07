@@ -1,0 +1,25 @@
+# CMake build directories
+build/
+NEXORA/build/
+NEXORA/build-ninja/
+**/build/
+**/CMakeCache.txt
+**/CMakeFiles/
+**/*.cmake
+**/cmake_install.cmake
+**/Makefile
+
+# Compiled binaries
+*.o
+*.a
+*.so
+*.dll
+*.exe
+*.out
+
+# IDE / OS
+.vscode/
+.idea/
+*.DS_Store
+Thumbs.db
+

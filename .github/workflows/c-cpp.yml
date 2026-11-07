@@ -19,6 +19,9 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y cmake ninja-build g++
 
+    - name: Clean stale CMake cache
+      run: rm -rf NEXORA/build
+
     - name: Configure
       run: cmake -S NEXORA -B NEXORA/build -G Ninja -DCMAKE_BUILD_TYPE=Release
 
