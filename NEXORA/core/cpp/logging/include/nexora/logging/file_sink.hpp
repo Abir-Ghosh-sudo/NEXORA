@@ -5,12 +5,13 @@
 #include <fstream>
 #include <mutex>
 #include <stdexcept>
-#include <string>
 #include <string_view>
+
+#include <nexora/logging/log_sink.hpp>
 
 namespace nexora::logging {
 
-class FileSink final {
+class FileSink final : public LogSink {
 public:
     explicit FileSink(const std::filesystem::path& file_path)
         : file_path_(file_path) {
@@ -36,7 +37,7 @@ public:
     FileSink(const FileSink&) = delete;
     FileSink& operator=(const FileSink&) = delete;
 
-    void write(std::string_view message) {
+    void write(std::string_view message) override {
         std::lock_guard<std::mutex> lock(mutex_);
 
         if (!stream_.is_open()) {
