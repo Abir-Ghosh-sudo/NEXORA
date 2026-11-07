@@ -24,12 +24,12 @@ jobs:
 
       - name: Configure NEXORA
         run: |
-          cmake -S . -B build -G Ninja \
+          cmake -S NEXORA -B NEXORA/build -G Ninja \
             -DCMAKE_BUILD_TYPE=Debug \
             -DNEXORA_BUILD_TESTS=ON
 
       - name: Build NEXORA
-        run: cmake --build build --parallel
+        run: cmake --build NEXORA/build --parallel
 
       - name: Run Tests
-        run: ctest --test-dir build --output-on-failure
+        run: ctest --test-dir NEXORA/build --output-on-failure
