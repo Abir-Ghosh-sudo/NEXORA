@@ -11,6 +11,8 @@
 
 namespace {
 
+using namespace nexora::logging;
+
 int passed = 0;
 int failed = 0;
 
@@ -37,11 +39,11 @@ std::string readFile(const std::filesystem::path& path) {
     return content.str();
 }
 
+// Test 1: File creation
 void testFileCreation() {
-    using namespace nexora::logging;
-
     const auto directory =
-        std::filesystem::temp_directory_path() / "nexora_logging_tests";
+        std::filesystem::temp_directory_path() /
+        "nexora_logging_tests";
 
     const auto file_path = directory / "creation_test.log";
 
@@ -59,9 +61,8 @@ void testFileCreation() {
     std::filesystem::remove_all(directory);
 }
 
+// Test 2: Single message write
 void testSingleMessageWrite() {
-    using namespace nexora::logging;
-
     const auto file_path =
         std::filesystem::temp_directory_path() /
         "nexora_logging_single_test.log";
@@ -83,9 +84,8 @@ void testSingleMessageWrite() {
     std::filesystem::remove(file_path);
 }
 
+// Test 3: Multiple message append
 void testMultipleMessageAppend() {
-    using namespace nexora::logging;
-
     const auto file_path =
         std::filesystem::temp_directory_path() /
         "nexora_logging_append_test.log";
@@ -109,18 +109,15 @@ void testMultipleMessageAppend() {
     std::filesystem::remove(file_path);
 }
 
+// Test 4: Nested directory creation
 void testNestedDirectoryCreation() {
-    using namespace nexora::logging;
-
     const auto directory =
         std::filesystem::temp_directory_path() /
         "nexora_logging_nested" / "logs";
 
     const auto file_path = directory / "nested.log";
 
-    std::filesystem::remove_all(
-        directory.parent_path()
-    );
+    std::filesystem::remove_all(directory.parent_path());
 
     {
         FileSink sink(file_path);
@@ -132,19 +129,17 @@ void testNestedDirectoryCreation() {
         "FileSink should create missing parent directories"
     );
 
-    std::filesystem::remove_all(
-        directory.parent_path()
-    );
+    std::filesystem::remove_all(directory.parent_path());
 }
 
+// Test 5: Reject an existing directory as a log file
 void testInvalidFilePath() {
-    using namespace nexora::logging;
-
     const auto invalid_path =
         std::filesystem::temp_directory_path() /
-        "nexora_logging_missing_parent" /
-        "missing_parent" /
-        "logs";
+        "nexora_logging_invalid_directory";
+
+    std::filesystem::remove_all(invalid_path);
+    std::filesystem::create_directories(invalid_path);
 
     bool exception_thrown = false;
 
@@ -156,8 +151,10 @@ void testInvalidFilePath() {
 
     expect(
         exception_thrown,
-        "FileSink should reject a directory path as a log file"
+        "FileSink should reject an existing directory as a log file"
     );
+
+    std::filesystem::remove_all(invalid_path);
 }
 
 } // namespace
