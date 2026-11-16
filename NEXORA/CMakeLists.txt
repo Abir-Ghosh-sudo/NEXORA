@@ -26,17 +26,20 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # Build Options
 # ============================================================
 
-option(NEXORA_BUILD_TESTS
+option(
+    NEXORA_BUILD_TESTS
     "Build NEXORA tests"
     ON
 )
 
-option(NEXORA_ENABLE_SANITIZERS
+option(
+    NEXORA_ENABLE_SANITIZERS
     "Enable AddressSanitizer and UndefinedBehaviorSanitizer"
     OFF
 )
 
-option(NEXORA_WARNINGS_AS_ERRORS
+option(
+    NEXORA_WARNINGS_AS_ERRORS
     "Treat compiler warnings as errors"
     OFF
 )
@@ -45,20 +48,35 @@ option(NEXORA_WARNINGS_AS_ERRORS
 # Build Configuration
 # ============================================================
 
-if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Debug CACHE STRING
-        "Build type" FORCE
-    )
-endif()
+if(CMAKE_CONFIGURATION_TYPES)
 
-set_property(
-    CACHE CMAKE_BUILD_TYPE
-    PROPERTY STRINGS
-        Debug
-        Release
-        RelWithDebInfo
-        MinSizeRel
-)
+    # Multi-configuration generators:
+    # Visual Studio, Xcode, etc.
+
+    message(STATUS "Multi-configuration generator detected")
+
+else()
+
+    # Single-configuration generators:
+    # Ninja, Makefiles, etc.
+
+    if(NOT CMAKE_BUILD_TYPE)
+        set(
+            CMAKE_BUILD_TYPE Debug
+            CACHE STRING "Build type" FORCE
+        )
+    endif()
+
+    set_property(
+        CACHE CMAKE_BUILD_TYPE
+        PROPERTY STRINGS
+            Debug
+            Release
+            RelWithDebInfo
+            MinSizeRel
+    )
+
+endif()
 
 # ============================================================
 # Shared Build Options
@@ -199,6 +217,7 @@ message(STATUS "======================================")
 add_subdirectory(core/cpp/runtime)
 add_subdirectory(core/cpp/logging)
 add_subdirectory(core/cpp/diagnostics)
+
 # ============================================================
 # Future Components
 # ============================================================
@@ -209,4 +228,3 @@ add_subdirectory(core/cpp/diagnostics)
 # - Python AI Services
 # - TypeScript Desktop Platform
 # - Mojo Compute Engine
-
