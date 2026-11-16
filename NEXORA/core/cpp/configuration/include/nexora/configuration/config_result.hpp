@@ -3,8 +3,8 @@
 
 #include "config_error.hpp"
 
-#include <expected>
 #include <utility>
+#include <variant>
 
 namespace nexora::configuration
 {
@@ -17,29 +17,29 @@ public:
     using ErrorType = ConfigError;
 
     ConfigResult(const T& value)
-        : result_(value)
+        : result_(std::in_place_index<0>, value)
     {
     }
 
     ConfigResult(T&& value)
-        : result_(std::move(value))
+        : result_(std::in_place_index<0>, std::move(value))
     {
     }
 
     ConfigResult(const ConfigError& error)
-        : result_(std::unexpected(error))
+        : result_(std::in_place_index<1>, error)
     {
     }
 
     ConfigResult(ConfigError&& error)
-        : result_(std::unexpected(std::move(error)))
+        : result_(std::in_place_index<1>, std::move(error))
     {
     }
 
     [[nodiscard]]
     bool hasValue() const noexcept
     {
-        return result_.has_value();
+        return result_.index() == 0;
     }
 
     [[nodiscard]]
@@ -51,35 +51,41 @@ public:
     [[nodiscard]]
     T& value() &
     {
-        return result_.value();
+        return std::get<0>(result_);
     }
 
     [[nodiscard]]
     const T& value() const&
     {
-        return result_.value();
+        return std::get<0>(result_);
     }
 
     [[nodiscard]]
     T&& value() &&
     {
-        return std::move(result_).value();
+        return std::move(std::get<0>(result_));
+    }
+
+    [[nodiscard]]
+    ConfigError& error() &
+    {
+        return std::get<1>(result_);
     }
 
     [[nodiscard]]
     const ConfigError& error() const&
     {
-        return result_.error();
+        return std::get<1>(result_);
     }
 
     [[nodiscard]]
     ConfigError&& error() &&
     {
-        return std::move(result_).error();
+        return std::move(std::get<1>(result_));
     }
 
 private:
-    std::expected<T, ConfigError> result_;
+    std::variant<T, ConfigError> result_;
 };
 
 } // namespace nexora::configuration
