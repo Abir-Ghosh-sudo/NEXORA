@@ -3,7 +3,10 @@
 
 #include "config_entry.hpp"
 #include "config_error.hpp"
+#include "config_result.hpp"
+#include "config_value.hpp"
 
+#include <cstddef>
 #include <mutex>
 #include <string>
 #include <unordered_map>
@@ -21,10 +24,14 @@ public:
     ConfigStore(const ConfigStore&) = delete;
     ConfigStore& operator=(const ConfigStore&) = delete;
 
+    ConfigStore(ConfigStore&&) = delete;
+    ConfigStore& operator=(ConfigStore&&) = delete;
+
     [[nodiscard]]
     bool contains(const std::string& key) const
     {
         std::lock_guard<std::mutex> lock(mutex_);
+
         return entries_.find(key) != entries_.end();
     }
 
@@ -80,6 +87,7 @@ public:
         }
 
         entries_.emplace(key, std::move(entry));
+
         return true;
     }
 
@@ -102,6 +110,7 @@ public:
         }
 
         it->second.setValue(std::move(value));
+
         return true;
     }
 
@@ -109,6 +118,7 @@ public:
     bool remove(const std::string& key)
     {
         std::lock_guard<std::mutex> lock(mutex_);
+
         return entries_.erase(key) > 0;
     }
 
@@ -116,6 +126,7 @@ public:
     std::size_t size() const
     {
         std::lock_guard<std::mutex> lock(mutex_);
+
         return entries_.size();
     }
 
@@ -123,12 +134,14 @@ public:
     bool empty() const
     {
         std::lock_guard<std::mutex> lock(mutex_);
+
         return entries_.empty();
     }
 
     void clear()
     {
         std::lock_guard<std::mutex> lock(mutex_);
+
         entries_.clear();
     }
 
@@ -151,6 +164,7 @@ public:
 
 private:
     mutable std::mutex mutex_;
+
     std::unordered_map<std::string, ConfigEntry> entries_;
 };
 
