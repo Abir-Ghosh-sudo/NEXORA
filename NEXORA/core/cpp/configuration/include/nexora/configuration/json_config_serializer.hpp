@@ -4,8 +4,11 @@
 #include "config_serializer.hpp"
 
 #include <charconv>
+#include <cmath>
+#include <cstdint>
 #include <string>
 #include <system_error>
+#include <variant>
 
 namespace nexora::configuration
 {
@@ -79,12 +82,12 @@ private:
     [[nodiscard]]
     static std::string serializeString(const std::string& value)
     {
+        constexpr char hexDigits[] = "0123456789abcdef";
+
         std::string result;
         result.reserve(value.size() + 2);
 
         result.push_back('"');
-
-        constexpr char hexDigits[] = "0123456789abcdef";
 
         for (const unsigned char ch : value)
         {
