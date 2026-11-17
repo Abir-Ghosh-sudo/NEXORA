@@ -8,9 +8,9 @@
 #include "config_store.hpp"
 #include "config_validator.hpp"
 
-#include <mutex>
+#include <algorithm>
+#include <cstddef>
 #include <string>
-#include <utility>
 #include <vector>
 
 namespace nexora::configuration
@@ -34,11 +34,11 @@ public:
             return result.value();
         }
 
-        auto defaultValue = defaults_.get(key);
+        ConfigValue defaultValue;
 
-        if (defaultValue.has_value())
+        if (defaults_.get(key, defaultValue))
         {
-            return defaultValue.value();
+            return defaultValue;
         }
 
         return result.error();
@@ -70,7 +70,7 @@ public:
             return store_.set(key, value);
         }
 
-        return store_.insert(key, value);
+        return store_.insert(ConfigEntry{key, value});
     }
 
     [[nodiscard]]
@@ -88,13 +88,14 @@ public:
         }
 
         defaults_.set(key, value);
+
         return true;
     }
 
     [[nodiscard]]
     ConfigResult<bool> remove(const std::string& key)
     {
-        if (!store_.contains(key))
+        if (!store_.remove(key))
         {
             return ConfigError{
                 ConfigErrorCode::NotFound,
@@ -102,7 +103,6 @@ public:
             };
         }
 
-        store_.remove(key);
         return true;
     }
 
@@ -119,7 +119,11 @@ public:
 
         for (const auto& key : defaults_.keys())
         {
-            if (std::find(result.begin(), result.end(), key) == result.end())
+            if (std::find(
+                    result.begin(),
+                    result.end(),
+                    key
+                ) == result.end())
             {
                 result.push_back(key);
             }
