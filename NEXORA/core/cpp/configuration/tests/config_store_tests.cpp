@@ -11,11 +11,11 @@ int main()
 {
     ConfigStore store;
 
-    // Initially empty
+    // 1. Initial state
     assert(store.empty());
     assert(store.size() == 0);
 
-    // Insert entries
+    // 2. Insert an entry
     auto insertResult = store.insert(
         ConfigEntry(
             "app.name",
@@ -30,20 +30,21 @@ int main()
     assert(store.contains("app.name"));
     assert(store.size() == 1);
 
-    // Retrieve value
+    // 3. Retrieve a value
     auto getResult = store.get("app.name");
 
     assert(getResult.hasValue());
     assert(getResult.value().isString());
     assert(*getResult.value().asString() == "NEXORA");
 
-    // Retrieve complete entry
+    // 4. Retrieve a complete entry
     auto entryResult = store.getEntry("app.name");
 
     assert(entryResult.hasValue());
     assert(entryResult.value().key() == "app.name");
+    assert(entryResult.value().description() == "Application name");
 
-    // Update existing value
+    // 5. Update an existing value
     auto setResult = store.set(
         "app.name",
         ConfigValue("NEXORA IDE")
@@ -55,38 +56,69 @@ int main()
     auto updatedResult = store.get("app.name");
 
     assert(updatedResult.hasValue());
+    assert(updatedResult.value().isString());
     assert(*updatedResult.value().asString() == "NEXORA IDE");
 
-    // Missing key
+    // 6. Retrieve a missing key
     auto missingResult = store.get("missing.key");
 
     assert(!missingResult.hasValue());
     assert(
-        missingResult.error().code() == ConfigErrorCode::NotFound
+        missingResult.error().code() ==
+        ConfigErrorCode::NotFound
     );
 
-    // Keys
+    // 7. Retrieve keys
     auto keys = store.keys();
 
     assert(keys.size() == 1);
     assert(keys.front() == "app.name");
 
-    // Remove entry
-    auto removeResult = store.remove("app.name");
+    // 8. Remove an entry
+    const bool removed = store.remove("app.name");
 
-    assert(removeResult.hasValue());
+    assert(removed);
     assert(!store.contains("app.name"));
     assert(store.empty());
 
-    // Clear store
-    store.insert(
+    // 9. Remove a missing entry
+    const bool missingRemoval = store.remove("missing.key");
+
+    assert(!missingRemoval);
+
+    // 10. Insert multiple entries
+    auto firstInsert = store.insert(
         ConfigEntry("app.version", ConfigValue(1))
     );
 
+    auto secondInsert = store.insert(
+        ConfigEntry("app.enabled", ConfigValue(true))
+    );
+
+    assert(firstInsert.hasValue());
+    assert(secondInsert.hasValue());
+    assert(store.size() == 2);
+
+    // 11. Verify stored values
+    auto versionResult = store.get("app.version");
+
+    assert(versionResult.hasValue());
+    assert(versionResult.value().isInteger());
+    assert(*versionResult.value().asInteger() == 1);
+
+    auto enabledResult = store.get("app.enabled");
+
+    assert(enabledResult.hasValue());
+    assert(enabledResult.value().isBoolean());
+    assert(*enabledResult.value().asBoolean());
+
+    // 12. Clear store
     store.clear();
 
     assert(store.empty());
     assert(store.size() == 0);
+    assert(!store.contains("app.version"));
+    assert(!store.contains("app.enabled"));
 
     std::cout
         << "[PASS] ConfigStore tests completed successfully.\n";
