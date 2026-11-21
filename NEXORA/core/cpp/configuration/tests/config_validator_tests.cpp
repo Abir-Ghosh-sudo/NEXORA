@@ -14,6 +14,7 @@ int main()
 
     // 1. Initial state
     assert(validator.ruleCount() == 0);
+    assert(!validator.hasRule("app.name"));
 
     // 2. Add string rule
     ConfigValidator::Rule nameRule;
@@ -21,10 +22,7 @@ int main()
     nameRule.required = true;
     nameRule.description = "Application name";
 
-    auto addNameRule = validator.addRule(
-        "app.name",
-        nameRule
-    );
+    auto addNameRule = validator.addRule("app.name", nameRule);
 
     assert(addNameRule.hasValue());
     assert(addNameRule.value());
@@ -35,89 +33,137 @@ int main()
     versionRule.expectedType = ConfigType::Integer;
     versionRule.required = true;
 
-    assert(
-        validator.addRule("app.version", versionRule).hasValue()
+    auto addVersionRule = validator.addRule(
+        "app.version",
+        versionRule
     );
+
+    assert(addVersionRule.hasValue());
+    assert(addVersionRule.value());
 
     // 4. Add boolean rule
     ConfigValidator::Rule enabledRule;
     enabledRule.expectedType = ConfigType::Boolean;
 
-    assert(
-        validator.addRule("app.enabled", enabledRule).hasValue()
+    auto addEnabledRule = validator.addRule(
+        "app.enabled",
+        enabledRule
     );
+
+    assert(addEnabledRule.hasValue());
 
     // 5. Add array rule
     ConfigValidator::Rule featuresRule;
     featuresRule.expectedType = ConfigType::Array;
 
-    assert(
-        validator.addRule("app.features", featuresRule).hasValue()
+    auto addFeaturesRule = validator.addRule(
+        "app.features",
+        featuresRule
     );
+
+    assert(addFeaturesRule.hasValue());
 
     // 6. Add object rule
     ConfigValidator::Rule settingsRule;
     settingsRule.expectedType = ConfigType::Object;
 
-    assert(
-        validator.addRule("app.settings", settingsRule).hasValue()
+    auto addSettingsRule = validator.addRule(
+        "app.settings",
+        settingsRule
     );
+
+    assert(addSettingsRule.hasValue());
 
     // 7. Add floating-point rule
     ConfigValidator::Rule ratioRule;
     ratioRule.expectedType = ConfigType::FloatingPoint;
 
-    assert(
-        validator.addRule("app.ratio", ratioRule).hasValue()
+    auto addRatioRule = validator.addRule(
+        "app.ratio",
+        ratioRule
     );
+
+    assert(addRatioRule.hasValue());
 
     // 8. Add null rule
     ConfigValidator::Rule nullRule;
     nullRule.expectedType = ConfigType::Null;
 
-    assert(
-        validator.addRule("app.optional", nullRule).hasValue()
+    auto addNullRule = validator.addRule(
+        "app.optional",
+        nullRule
     );
+
+    assert(addNullRule.hasValue());
 
     assert(validator.ruleCount() == 7);
 
-    // 9. Validate correct types
-    assert(validator.validate(
-        "app.name", ConfigValue("NEXORA")
-    ).hasValue());
+    // 9. Validate correct string type
+    auto validName = validator.validate(
+        "app.name",
+        ConfigValue("NEXORA")
+    );
 
-    assert(validator.validate(
-        "app.version", ConfigValue(1)
-    ).hasValue());
+    assert(validName.hasValue());
 
-    assert(validator.validate(
-        "app.enabled", ConfigValue(true)
-    ).hasValue());
+    // 10. Validate integer type
+    auto validVersion = validator.validate(
+        "app.version",
+        ConfigValue(1)
+    );
 
-    assert(validator.validate(
+    assert(validVersion.hasValue());
+
+    // 11. Validate boolean type
+    auto validEnabled = validator.validate(
+        "app.enabled",
+        ConfigValue(true)
+    );
+
+    assert(validEnabled.hasValue());
+
+    // 12. Validate array type
+    ConfigValue::Array features{
+        ConfigValue("AI"),
+        ConfigValue("IDE")
+    };
+
+    auto validFeatures = validator.validate(
         "app.features",
-        ConfigValue::Array{
-            ConfigValue("AI"),
-            ConfigValue("IDE")
-        }
-    ).hasValue());
+        ConfigValue(std::move(features))
+    );
 
-    assert(validator.validate(
+    assert(validFeatures.hasValue());
+
+    // 13. Validate object type
+    ConfigValue::Object settings{
+        {"theme", ConfigValue("dark")}
+    };
+
+    auto validSettings = validator.validate(
         "app.settings",
-        ConfigValue::Object{
-            {"theme", ConfigValue("dark")}
-        }
-    ).hasValue());
+        ConfigValue(std::move(settings))
+    );
 
-    assert(validator.validate(
-        "app.ratio", ConfigValue(1.5)
-    ).hasValue());
+    assert(validSettings.hasValue());
 
-    assert(validator.validate(
-        "app.optional", ConfigValue()
-    ).hasValue());
+    // 14. Validate floating-point type
+    auto validRatio = validator.validate(
+        "app.ratio",
+        ConfigValue(1.5)
+    );
 
-    // 10. Reject incorrect type
+    assert(validRatio.hasValue());
+
+    // 15. Validate null type
+    auto validNull = validator.validate(
+        "app.optional",
+        ConfigValue()
+    );
+
+    assert(validNull.hasValue());
+
+    // 16. Reject incorrect type
     auto invalidType = validator.validate(
         "app.version",
         ConfigValue("one")
@@ -125,33 +171,50 @@ int main()
 
     assert(!invalidType.hasValue());
     assert(
-        invalidType.error().code() == ConfigErrorCode::InvalidType
+        invalidType.error().code() ==
+        ConfigErrorCode::InvalidType
     );
 
-    // 11. Unknown key has no validation rule
-    assert(validator.validate(
-        "app.unknown", ConfigValue(100)
-    ).hasValue());
+    // 17. Unknown key should pass without a rule
+    auto unknownKey = validator.validate(
+        "app.unknown",
+        ConfigValue(100)
+    );
 
-    // 12. Custom validation
+    assert(unknownKey.hasValue());
+
+    // 18. Custom validation for server port
     ConfigValidator::Rule portRule;
     portRule.expectedType = ConfigType::Integer;
+
     portRule.customValidator = [](const ConfigValue& value)
     {
         const auto* port = value.asInteger();
-        return port != nullptr && *port > 0 && *port <= 65535;
+
+        return port != nullptr &&
+               *port > 0 &&
+               *port <= 65535;
     };
 
-    assert(
-        validator.addRule("server.port", portRule).hasValue()
+    auto addPortRule = validator.addRule(
+        "server.port",
+        portRule
     );
 
-    assert(validator.validate(
-        "server.port", ConfigValue(8080)
-    ).hasValue());
+    assert(addPortRule.hasValue());
 
+    // Valid port
+    auto validPort = validator.validate(
+        "server.port",
+        ConfigValue(8080)
+    );
+
+    assert(validPort.hasValue());
+
+    // Invalid port
     auto invalidPort = validator.validate(
-        "server.port", ConfigValue(70000)
+        "server.port",
+        ConfigValue(70000)
     );
 
     assert(!invalidPort.hasValue());
@@ -160,37 +223,51 @@ int main()
         ConfigErrorCode::ValidationFailed
     );
 
-    // 13. Required fields
+    // 19. Validate required fields
     std::vector<std::string> availableKeys{
         "app.name",
         "app.version"
     };
 
-    assert(validator.validateRequired(availableKeys).hasValue());
+    auto validRequired = validator.validateRequired(
+        availableKeys
+    );
 
+    assert(validRequired.hasValue());
+
+    // Missing required field
     std::vector<std::string> missingKeys{
         "app.version"
     };
 
-    auto requiredResult = validator.validateRequired(missingKeys);
+    auto invalidRequired = validator.validateRequired(
+        missingKeys
+    );
 
-    assert(!requiredResult.hasValue());
+    assert(!invalidRequired.hasValue());
     assert(
-        requiredResult.error().code() ==
+        invalidRequired.error().code() ==
         ConfigErrorCode::MissingRequiredField
     );
 
-    // 14. Remove rule
-    assert(validator.removeRule("app.enabled"));
+    // 20. Remove an existing rule
+    const bool removed = validator.removeRule("app.enabled");
+
+    assert(removed);
     assert(!validator.hasRule("app.enabled"));
 
-    // 15. Remove missing rule
-    assert(!validator.removeRule("app.missing"));
+    // 21. Remove a missing rule
+    const bool missingRemoval = validator.removeRule(
+        "app.missing"
+    );
 
-    // 16. Clear rules
+    assert(!missingRemoval);
+
+    // 22. Clear all rules
     validator.clearRules();
 
     assert(validator.ruleCount() == 0);
+    assert(!validator.hasRule("app.name"));
 
     std::cout
         << "[PASS] ConfigValidator tests completed successfully.\n";
