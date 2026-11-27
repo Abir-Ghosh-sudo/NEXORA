@@ -217,6 +217,7 @@ message(STATUS "======================================")
 add_subdirectory(core/cpp/runtime)
 add_subdirectory(core/cpp/logging)
 add_subdirectory(core/cpp/diagnostics)
+add_subdirectory(core/cpp/configuration)
 
 # ============================================================
 # Future Components
