@@ -1,4 +1,3 @@
-
 #include "nexora/configuration/config_parser.hpp"
 
 #include <cassert>
@@ -8,6 +7,7 @@
 
 using namespace nexora::configuration;
 
+// Minimal concrete parser for testing the abstract ConfigParser interface.
 class TestParser final : public ConfigParser
 {
 public:
@@ -25,7 +25,7 @@ public:
 
         return ConfigError{
             ConfigErrorCode::ParseError,
-            "Unable to parse configuration input."
+            "Invalid test input"
         };
     }
 };
@@ -53,6 +53,7 @@ int main()
 
     assert(!invalidResult.hasValue());
     assert(invalidResult.error().code() == ConfigErrorCode::ParseError);
+    assert(!invalidResult.error().message().empty());
 
     // Test 4: Empty input should return an error.
     auto emptyResult = parser.parse("");
@@ -66,7 +67,7 @@ int main()
     assert(!fileResult.hasValue());
     assert(fileResult.error().code() == ConfigErrorCode::UnsupportedFormat);
 
-    std::cout << "[PASS] ConfigParser tests completed successfully.\n";
+    std::cout << "[PASS] ConfigParser interface tests\n";
 
     return 0;
 }
